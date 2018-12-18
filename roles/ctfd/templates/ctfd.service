@@ -1,0 +1,16 @@
+[Service]
+PermissionsStartOnly=true
+PIDFile=/run/ctfd/ctfd.pid
+User=ctfd
+Group=ctfd
+WorkingDirectory=/opt/ctfd
+ExecStartPre=/bin/mkdir /run/ctfd
+ExecStartPre=/bin/chown -R ctfd:ctfd /run/ctfd
+ExecStart=/usr/bin/env gunicorn --bind 0.0.0.0:8000 --pid /run/ctfd/ctfd.pid "CTFd:create_app()"
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+ExecStopPost=/bin/rm -rf /run/ctfd
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

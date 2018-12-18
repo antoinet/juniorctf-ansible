@@ -1,0 +1,51 @@
+---
+# tasks file for ctfd
+
+
+- name: Create CTFd group
+  group:
+    gid: "{{ ctfd_gid }}"
+    name: "{{ ctfd_group }}"
+
+- name: Create CTFd user
+  user:
+    uid: "{{ ctfd_uid }}"
+    name: "{{ ctfd_user }}"
+    createhome: no
+    home: "{{ ctfd_dir }}"
+    shell: /sbin/noshell
+
+- name: Clone CTFd repo
+  git:
+    repo: https://github.com/CTFd/CTFd.git
+    dest: "{{ ctfd_dir }}"
+    force: yes
+
+- name: Install CTFd apt requirements
+  apt:
+    name:
+      - gunicorn
+
+- name: Install CTFd pip requirements
+  pip:
+    requirements: "{{ ctfd_dir }}/requirements.txt"
+
+- name: Set CTFd permissions
+  file:
+    path: "{{ ctfd_dir }}"
+    state: directory
+    owner: "{{ ctfd_user }}"
+    group: "{{ ctfd_group }}"
+    mode: 0755
+    recurse: yes
+
+- name: Configure CTFd as a service
+  template:
+    src: ctfd.service
+    dest: /etc/systemd/system/ctfd.service
+
+- name: Start CTFd service at boot time
+  service:
+    name: ctfd
+    enabled: yes
+

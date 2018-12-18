@@ -1,0 +1,34 @@
+---
+# tasks file for juniorctf
+
+- name: Create JuniorCTF group
+  group:
+    gid: "{{ jctf_gid }}"
+    name: "{{ jctf_group }}"
+
+- name: Create JuniorCTF user
+  user:
+    uid: "{{ jctf_uid }}"
+    name: "{{ jctf_user }}"
+
+- name: Pull JuniorCTF repo
+  git:
+    repo: https://framagit.org/axellec/juniorctf.git
+    dest: "{{ jctf_path }}"
+    force: yes
+
+- name: Install JuniorCTF requirements
+  apt:
+    name:
+      - docker.io
+      - john
+      - john-data
+
+- name: Set JuniorCTF permissions
+  file:
+    path: "{{ jctf_path }}"
+    state: directory
+    owner: "{{ jctf_user }}"
+    group: "{{ jctf_group }}"
+    mode: 0755
+    recurse: yes

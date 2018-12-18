@@ -1,0 +1,8 @@
+---
+# vars file for juniorctf
+jctf_path: /opt/juniorctf
+jctf_user: juniorctf
+jctf_uid: 901
+jctf_group: juniorctf
+jctf_gid: 901
+
