@@ -1,6 +1,12 @@
+# taken from: https://opensource.com/article/18/3/manage-workstation-ansible
 - hosts: localhost
   become: true
   tasks:
   - name: Install htop
     apt: name=htop
 
+  - name: Install mc
+    apt: name=mc
+
+  - name: Install tmux
+    apt: name=tmux
