@@ -12,13 +12,13 @@
     uid: "{{ ctfd_uid }}"
     name: "{{ ctfd_user }}"
     createhome: no
-    home: "{{ ctfd_dir }}"
+    home: "{{ ctfd_base_dir }}"
     shell: /sbin/noshell
 
 - name: Clone CTFd repo
   git:
     repo: https://github.com/CTFd/CTFd.git
-    dest: "{{ ctfd_dir }}"
+    dest: "{{ ctfd_base_dir }}"
     force: yes
 
 - name: Install CTFd apt requirements
@@ -28,21 +28,48 @@
 
 - name: Install CTFd pip requirements
   pip:
-    requirements: "{{ ctfd_dir }}/requirements.txt"
+    requirements: "{{ ctfd_base_dir }}/requirements.txt"
 
 - name: Set CTFd permissions
   file:
-    path: "{{ ctfd_dir }}"
+    path: "{{ ctfd_base_dir }}"
     state: directory
     owner: "{{ ctfd_user }}"
     group: "{{ ctfd_group }}"
     mode: 0755
     recurse: yes
 
+- name: Create CTFd config directory
+  file:
+    path: "{{ ctfd_conf_file | dirname }}"
+    state: directory
+
+- name: Store CTFd config
+  template:
+    src: ctfd.conf
+    dest: "{{ ctfd_conf_file }}"
+    mode: 0644
+
+- name: CTFd logs directory
+  file:
+    path: "{{ ctfd_log_dir }}"
+    state: directory
+    owner: "{{ ctfd_user }}"
+    group: "{{ ctfd_group }}"
+    mode: 0755
+
+- name: CTFd upload directory
+  file:
+    path: "{{ ctfd_upload_dir }}"
+    state: directory
+    owner: "{{ ctfd_user }}"
+    group: "{{ ctfd_group }}"
+    mode: 0755
+
 - name: Configure CTFd as a service
   template:
     src: ctfd.service
-    dest: /etc/systemd/system/ctfd.service
+    dest: "{{ ctfd_service_file }}"
 
 - name: Start CTFd service at boot time
   service:

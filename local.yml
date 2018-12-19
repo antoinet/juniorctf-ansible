@@ -1,5 +1,8 @@
 - hosts: localhost
   become: true
+  
+  vars_files:
+    - vars/main.yml
 
 #  pre_tasks:
 #    - name: update repositories
@@ -7,5 +10,6 @@
 #      changed_when: False
 
   roles:
+    - role: geerlingguy.mysql
     - role: ctfd
     - role: juniorctf

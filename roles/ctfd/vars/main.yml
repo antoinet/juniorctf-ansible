@@ -1,6 +1,11 @@
 ---
 # vars file for ctfd
-ctfd_dir: /opt/ctfd
+ctfd_base_dir: /opt/ctfd
+ctfd_log_dir: /var/log/ctfd
+ctfd_upload_dir: /var/lib/ctfd
+ctfd_pid_file: /var/run/ctfd/ctfd.pid
+ctfd_conf_file: /etc/opt/ctfd.conf
+ctfd_service_file: /etc/systemd/system/ctfd.service
 ctfd_user: ctfd
 ctfd_uid: 900
 ctfd_group: ctfd

@@ -1,0 +1,10 @@
+mysql_root_password: root
+mysql_databases:
+  - name: ctfd
+    encoding: latin1
+    collation: latin1_general_ci
+mysql_users:
+  - name: ctfd
+    host: "%"
+    password: ctfd
+    priv: "ctfd.*:ALL"

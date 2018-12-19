@@ -1,15 +1,16 @@
 [Service]
 PermissionsStartOnly=true
-PIDFile=/run/ctfd/ctfd.pid
-User=ctfd
-Group=ctfd
-WorkingDirectory=/opt/ctfd
-ExecStartPre=/bin/mkdir /run/ctfd
-ExecStartPre=/bin/chown -R ctfd:ctfd /run/ctfd
-ExecStart=/usr/bin/env gunicorn --bind 0.0.0.0:8000 --pid /run/ctfd/ctfd.pid "CTFd:create_app()"
+PIDFile={{ ctfd_pid_file }}
+EnvironmentFile={{ ctfd_conf_file }}
+User={{ ctfd_user }}
+Group={{ ctfd_group }}
+WorkingDirectory={{ ctfd_base_dir }}
+ExecStartPre=/bin/mkdir {{ ctfd_pid_file | dirname }}
+ExecStartPre=/bin/chown -R {{ ctfd_user}}:{{ ctfd_group}} {{ ctfd_pid_file | dirname }}
+ExecStart=/usr/bin/env gunicorn --bind 0.0.0.0:8000 --pid {{ ctfd_pid_file }} "CTFd:create_app()"
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
-ExecStopPost=/bin/rm -rf /run/ctfd
+ExecStopPost=/bin/rm -rf {{ ctfd_pid_file | dirname }}
 PrivateTmp=true
 
 [Install]
