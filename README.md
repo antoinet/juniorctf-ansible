@@ -19,9 +19,10 @@ $ sudo apt install ansible
 $ sudo apt install git python python-pip
 ```
 
-### Install the mysql role
+### Install the mysql and redis roles
 ```bash
 $ ansible-galaxy install geerlingguy.mysql
+$ ansible-galaxy install geerlingguy.redis
 ```
 
 ## Running the Playbook

@@ -11,5 +11,6 @@
 
   roles:
     - role: geerlingguy.mysql
+    - role: geerlingguy.redis
     - role: ctfd
     - role: juniorctf

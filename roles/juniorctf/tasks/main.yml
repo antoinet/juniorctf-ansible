@@ -11,18 +11,25 @@
     uid: "{{ jctf_uid }}"
     name: "{{ jctf_user }}"
 
-- name: Pull JuniorCTF repo
-  git:
-    repo: https://framagit.org/axellec/juniorctf.git
-    dest: "{{ jctf_path }}"
-    force: yes
-
 - name: Install JuniorCTF requirements
   apt:
     name:
       - docker.io
       - john
       - john-data
+
+- name: Pull JuniorCTF repo
+  git:
+    repo: https://framagit.org/axellec/juniorctf.git
+    dest: "{{ jctf_path }}"
+    force: yes
+
+- name: Build JuniorCTF Docker images
+  make:
+    chdir: "{{ jctf_path }}/challenges"
+    target: build
+    params:
+      LANG: fr
 
 - name: Set JuniorCTF permissions
   file:
