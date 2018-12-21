@@ -25,6 +25,7 @@
   apt:
     name:
       - gunicorn
+      - authbind
 
 - name: Install CTFd pip requirements
   pip:
@@ -65,6 +66,13 @@
     owner: "{{ ctfd_user }}"
     group: "{{ ctfd_group }}"
     mode: 0755
+
+- name: Set authbind permissions
+  file:
+    path: /etc/authbind/byport/80
+    state: touch
+    owner: "{{ ctfd_user }}"
+    mode: 0500
 
 - name: Configure CTFd as a service
   template:
