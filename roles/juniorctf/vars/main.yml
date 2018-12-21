@@ -1,8 +1,10 @@
 ---
 # vars file for juniorctf
 jctf_path: /opt/juniorctf
+jctf_rc_path: "{{ jctf_path }}/challenges/sysadmin"
 jctf_user: juniorctf
 jctf_uid: 901
 jctf_group: juniorctf
 jctf_gid: 901
+jctf_service_file: /etc/systemd/system/juniorctf.service
 

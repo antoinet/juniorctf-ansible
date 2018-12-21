@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker containers for challenges of Junior CTF
+After=ctfd.service
+
+[Service]
+Type=oneshot
+User={{ jctf_user }}
+Group={{ jctf_group }}
+RemainAfterExit=yes
+ExecStart=/bin/bash {{ jctf_rc_path }}/up.sh
+ExecStop=/bin/bash {{ jctf_rc_path }}/down.sh
+
+[Install]
+WantedBy=multi-user.target

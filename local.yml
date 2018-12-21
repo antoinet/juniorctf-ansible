@@ -11,6 +11,10 @@
 
   roles:
     - role: geerlingguy.mysql
+      tags: mysql
     - role: geerlingguy.redis
+      tags: redis
     - role: ctfd
+      tags: ctfd
     - role: juniorctf
+      tags: juniorctf

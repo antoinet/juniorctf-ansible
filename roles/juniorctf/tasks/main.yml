@@ -10,6 +10,7 @@
   user:
     uid: "{{ jctf_uid }}"
     name: "{{ jctf_user }}"
+    groups: docker
 
 - name: Install JuniorCTF requirements
   apt:
@@ -39,3 +40,21 @@
     group: "{{ jctf_group }}"
     mode: 0755
     recurse: yes
+
+- name: Configure JuniorCTF as a service
+  template:
+    src: juniorctf.service
+    dest: "{{ jctf_service_file }}"
+
+- name: Start JuniorCTF service at boot time
+  service:
+    name: juniorctf
+    enabled: yes
+
+- name: Add host juniorctf
+  lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 juniorctf'
+    owner: root
+    group: root
+    mode: 0644
