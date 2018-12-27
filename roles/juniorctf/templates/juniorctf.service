@@ -6,7 +6,7 @@ After=ctfd.service
 Type=oneshot
 User={{ jctf_user }}
 Group={{ jctf_group }}
-RemainAfterExit=yes
+RemainAfterExit=true
 ExecStart=/bin/bash {{ jctf_rc_path }}/up.sh
 ExecStop=/bin/bash {{ jctf_rc_path }}/down.sh
 
