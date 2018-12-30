@@ -38,7 +38,7 @@
     state: directory
     owner: "{{ jctf_user }}"
     group: "{{ jctf_group }}"
-    mode: 0755
+    mode: u=rwX,g=rX,o=rX
     recurse: yes
 
 - name: Configure JuniorCTF as a service

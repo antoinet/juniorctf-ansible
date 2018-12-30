@@ -37,7 +37,7 @@
     state: directory
     owner: "{{ ctfd_user }}"
     group: "{{ ctfd_group }}"
-    mode: 0755
+    mode: u=rwX,g=rX,o=rX
     recurse: yes
 
 - name: Create CTFd config directory
