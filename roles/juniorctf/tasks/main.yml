@@ -12,16 +12,24 @@
     name: "{{ jctf_user }}"
     groups: docker
 
-- name: Install JuniorCTF requirements
+- name: Install JuniorCTF apt requirements
   apt:
     name:
       - docker.io
       - john
       - john-data
+      - hydra
+
+- name: Install JuniorCTF pip requirements
+  pip:
+    name:
+      - markdown
+      - requests
+      - beautifulsoup4
 
 - name: Pull JuniorCTF repo
   git:
-    repo: https://framagit.org/axellec/juniorctf.git
+    repo: https://framagit.org/ant0inet/juniorctf.git
     dest: "{{ jctf_path }}"
     force: yes
 
@@ -46,10 +54,11 @@
     src: juniorctf.service
     dest: "{{ jctf_service_file }}"
 
-- name: Start JuniorCTF service at boot time
+- name: Ensure JuniorCTF service is enabled and started
   service:
     name: juniorctf
     enabled: yes
+    state: started
 
 - name: Add host juniorctf
   lineinfile:
@@ -58,3 +67,16 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Check if CTFd is already setup
+  uri:
+    url: http://juniorctf/
+    status_code: 302
+    follow_redirects: none
+  ignore_errors: True
+  no_log: True
+  register: ctfd_setup
+
+- name: Setup CTFd and import JuniorCTF challenges
+  command: "{{ jctf_path }}/challenges/sysadmin/import.py --setup --email admin@example.com -l admin -p password1 unix1-goldeneye unix2-exfiltration unix3-leiter john1 john2 john3-boris john4-garage john5-moneypenny john6-voiture hydra1-frigo hydra2-frigo"
+  when: ctfd_setup is succeeded

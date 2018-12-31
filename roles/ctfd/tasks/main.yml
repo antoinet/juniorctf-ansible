@@ -79,8 +79,9 @@
     src: ctfd.service
     dest: "{{ ctfd_service_file }}"
 
-- name: Start CTFd service at boot time
+- name: Ensure the CTFd service is enabled and started
   service:
     name: ctfd
     enabled: yes
+    state: started
 
