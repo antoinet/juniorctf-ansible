@@ -1,5 +1,6 @@
 [Unit]
 Description=Docker containers for challenges of Junior CTF
+After=docker.service
 After=ctfd.service
 
 [Service]
@@ -9,6 +10,7 @@ Group={{ jctf_group }}
 RemainAfterExit=true
 ExecStart=/bin/bash {{ jctf_rc_path }}/up.sh
 ExecStop=/bin/bash {{ jctf_rc_path }}/down.sh
+TimeoutSec=300min
 
 [Install]
 WantedBy=multi-user.target
